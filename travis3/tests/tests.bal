@@ -28,4 +28,7 @@ function testAccountDetails() {
 
     response = check travisConnector->getEnvironmentVariables("ballerina-guides", "ballerina-demo");
     io:println(response);
+
+    response = check travisConnector->triggerBuild("ballerina-guides", "ballerina-demo");
+    io:println(response);
 }
