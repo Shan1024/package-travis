@@ -10,61 +10,33 @@ public type TravisConnector object {
     public function getEnvironmentVariables(string organization, string name) returns json|error {
         endpoint http:Client httpClient = client;
 
-        http:Request request = createResponse(authToken);
         string requestPath = "/repo/" + organization + "%2F" + name + "/env_vars";
 
+        http:Request request = createResponse(authToken);
         var response = httpClient->get(requestPath, message = request);
-        match response {
-            http:Response httpResponse => {
-                var jsonPayload = httpResponse.getJsonPayload();
-                match jsonPayload {
-                    json payload => return payload;
-                    error err => return err;
-                }
-            }
-            error err => return err;
-        }
+        return getJsonPayload(response);
     }
 
     public function createEnvironmentVariable(string organization, string name, json<EnvVar> envVar)
                         returns json|error {
         endpoint http:Client httpClient = client;
 
-        http:Request request = createResponse(authToken);
-        request.setJsonPayload(envVar);
-
         string requestPath = "/repo/" + organization + "%2F" + name + "/env_vars";
 
+        http:Request request = createResponse(authToken);
+        request.setJsonPayload(envVar);
         var response = httpClient->post(requestPath, request);
-        match response {
-            http:Response httpResponse => {
-                var jsonPayload = httpResponse.getJsonPayload();
-                match jsonPayload {
-                    json payload => return payload;
-                    error err => return err;
-                }
-            }
-            error err => return err;
-        }
+        return getJsonPayload(response);
     }
 
     public function deleteEnvironmentVariable(string organization, string name, string id)
                         returns json|error {
         endpoint http:Client httpClient = client;
-        http:Request request = createResponse(authToken);
 
         string requestPath = "/repo/" + organization + "%2F" + name + "/env_var/" + id;
 
+        http:Request request = createResponse(authToken);
         var response = httpClient->delete(requestPath, request);
-        match response {
-            http:Response httpResponse => {
-                var jsonPayload = httpResponse.getJsonPayload();
-                match jsonPayload {
-                    json payload => return payload;
-                    error err => return err;
-                }
-            }
-            error err => return err;
-        }
+        return getJsonPayload(response);
     }
 };

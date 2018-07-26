@@ -3,3 +3,4 @@ target/
 /.idea/
 /ballerina-internal.log
 /package-travis.iml
+/Ballerina.conf

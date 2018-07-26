@@ -6,3 +6,16 @@ function createResponse(string authToken) returns http:Request {
     request.setHeader("Authorization", "token " + authToken);
     return request;
 }
+
+function getJsonPayload(http:Response|error response) returns json|error {
+    match response {
+        http:Response httpResponse => {
+            var jsonPayload = httpResponse.getJsonPayload();
+            match jsonPayload {
+                json payload => return payload;
+                error err => return err;
+            }
+        }
+        error err => return err;
+    }
+}
